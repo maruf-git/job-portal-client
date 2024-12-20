@@ -1,10 +1,26 @@
-import { useState } from 'react'
+import axios from 'axios'
+import { useContext, useEffect, useState } from 'react'
 
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
+import { useParams } from 'react-router-dom'
+import { AuthContext } from '../providers/AuthProvider'
 
 const JobDetails = () => {
   const [startDate, setStartDate] = useState(new Date())
+  const { user } = useContext(AuthContext);
+  const { id } = useParams();
+  const [job, setJob] = useState({});
+
+
+  useEffect(() => {
+    axios.get(`${import.meta.env.VITE_API_URI}/job/${id}`)
+      .then(res => {
+        setJob(res.data);
+      })
+  }, [id])
+
+
 
   return (
     <div className='flex flex-col md:flex-row justify-around gap-5  items-center min-h-[calc(100vh-306px)] md:max-w-screen-xl mx-auto '>
@@ -12,22 +28,20 @@ const JobDetails = () => {
       <div className='flex-1  px-4 py-7 bg-white rounded-md shadow-md md:min-h-[350px]'>
         <div className='flex items-center justify-between'>
           <span className='text-sm font-light text-gray-800 '>
-            Deadline: 28/05/2024
+            Deadline: {job.deadline}
           </span>
           <span className='px-4 py-1 text-xs text-blue-800 uppercase bg-blue-200 rounded-full '>
-            Web Development
+            {job.category}
           </span>
         </div>
 
         <div>
           <h1 className='mt-2 text-3xl font-semibold text-gray-800 '>
-            Web Development
+            {job.job_title}
           </h1>
 
           <p className='mt-2 text-lg text-gray-600 '>
-            Dramatically redefine bleeding-edge infrastructures after
-            client-focused value. Intrinsicly seize user-centric partnerships
-            through out-of-the-box architectures. Distinctively.
+            {job.description}
           </p>
           <p className='mt-6 text-sm font-bold text-gray-600 '>
             Buyer Details:
@@ -35,10 +49,10 @@ const JobDetails = () => {
           <div className='flex items-center gap-5'>
             <div>
               <p className='mt-2 text-sm  text-gray-600 '>
-                Name: Programming-Hero Instructors
+                Name: {job?.buyer?.buyer_name}
               </p>
               <p className='mt-2 text-sm  text-gray-600 '>
-                Email: instructors@programming-hero.com
+                Email: {job?.buyer?.buyer_email}
               </p>
             </div>
             <div className='rounded-full object-cover overflow-hidden w-14 h-14'>
@@ -49,7 +63,7 @@ const JobDetails = () => {
             </div>
           </div>
           <p className='mt-6 text-lg font-bold text-gray-600 '>
-            Range: $500 - $600
+            Range: ${job.min_price} - ${job.max_price}
           </p>
         </div>
       </div>
