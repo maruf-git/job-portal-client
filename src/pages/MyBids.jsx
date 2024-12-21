@@ -3,14 +3,17 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../providers/AuthProvider";
 import { format } from "date-fns";
 import toast from "react-hot-toast";
+import UseAxiosSecure from "../hooks/UseAxiosSecure";
+
 
 const MyBids = () => {
+  const axiosSecure=UseAxiosSecure();
   const { user } = useContext(AuthContext)
   const [bids, setBids] = useState([]);
 
   // help
   const loadData = () => {
-    axios.get(`${import.meta.env.VITE_API_URI}/bids/${user.email}`)
+    axiosSecure.get(`/bids/${user.email}`)
       .then(res => {
         setBids(res.data);
 

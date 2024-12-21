@@ -3,16 +3,18 @@ import { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AuthContext } from '../providers/AuthProvider';
 import toast from 'react-hot-toast';
+import UseAxiosSecure from '../hooks/UseAxiosSecure';
 
 const MyPostedJobs = () => {
+  const axiosSecure=UseAxiosSecure();
   const [jobs, setJobs] = useState([]);
   const { user } = useContext(AuthContext);
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_API_URI}/jobs/${user.email}`)
+    axiosSecure.get(`/jobs/${user.email}`)
       .then(res => {
         setJobs(res.data);
       })
-  }, [user.email])
+  }, [axiosSecure, user.email])
 
   const handleDelete = (id) => {
 
@@ -23,7 +25,7 @@ const MyPostedJobs = () => {
           <button
             onClick={() => {
               // job delete operation
-              axios.delete(`${import.meta.env.VITE_API_URI}/my-posted-jobs/${id}`)
+              axiosSecure.delete(`/my-posted-jobs/${id}`)
                 .then(res => {
                   if (res.data.deletedCount) {
                     // closing toast
