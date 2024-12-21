@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 
 import { Link } from 'react-router-dom'
-
+import { format } from "date-fns";
 // eslint-disable-next-line no-unused-vars
 const JobCard = ({job}) => {
   const {job_title,category,description,min_price,max_price,deadline,buyer,bid_count,_id} = job;
@@ -12,7 +12,7 @@ const JobCard = ({job}) => {
     >
       <div className='flex items-center justify-between'>
         <span className='text-xs font-light text-gray-800 '>
-          Deadline: {deadline}
+          Deadline: {format(deadline,'P')}
         </span>
         <span className='px-3 py-1 text-[8px] text-blue-800 uppercase bg-blue-200 rounded-full '>
           {category}

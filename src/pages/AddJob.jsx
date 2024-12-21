@@ -25,14 +25,15 @@ const AddJob = () => {
       buyer_email: user?.email,
       buyer_photo: user?.photoURL
     }
+    // console.log(newJob.deadline);
     // saving data to the database
     axios.post(`${import.meta.env.VITE_API_URI}/add-job`, newJob)
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         if(res.data.insertedId)
         {
           toast.success('Job is Successfully Posted');
-          navigate('/my-posted-jobs');
+          // navigate('/my-posted-jobs');
         }
       })
   }
